@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>wkwebview与js交互</title>
+</head>
+<body>
+    <button onclick="jsToOc()">JS调用OC</button>
+    <button onclick="jsToOcWithJsonString()">JS调用OC-传参</button>
+</body>
+<script>
+    // js调用oc函数 jsHandel
+    function jsToOc() {
+        window.webkit.messageHandlers.jsHandel.postMessage();
+    }
+    // js调用oc函数 jsHandelWithParam
+    function jsToOcWithJsonString() {
+        var json = {
+            "name":"木世界 .",
+            "address":"广东省广州市"
+        }
+        window.webkit.messageHandlers.jsHandelWithParam.postMessage(JSON.stringify(json));
+    }
+    // oc调用Js函数，传参name
+    function ocToJs(name = '') {
+        console.log('oc向js传入了参数 name = ',name);
+        alert(name);
+    }
+</script>
+</html>
