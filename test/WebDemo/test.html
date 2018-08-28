@@ -7,26 +7,80 @@
     <title>wkwebview与js交互</title>
 </head>
 <body>
-    <button onclick="jsToOc()">JS调用OC</button>
-    <button onclick="jsToOcWithJsonString()">JS调用OC-传参</button>
+    <style>
+        .container {
+            margin: 5%;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        button {
+            height: 40px;
+            outline-style: none;
+            background-color: rgb(45, 183, 238);
+            border-radius: 4px;
+            border: none;
+            color: white;
+            font-size: 16px;
+        }
+        #container1 {
+            background-color: beige;
+        }
+        #container2 {
+            background-color: rgb(245, 168, 248);
+        }
+    </style>
+    <div class="container" id="container1">
+        <h2>WKWebView与JS交互</h2>
+            <button onclick="jsToOc()" >JS调用OC</button>
+            <button onclick="jsToOcWithJsonString()">JS调用OC-传参</button>
+    </div>
+    <div class="container" id="container2">
+            <h2>UIWebView与JS交互</h2>
+            <button onclick='uiweb_jsToOc("aaabbb","CCCCC")'>JS调用OC</button>
+            <button onclick='uiweb_jsToOcWithJsonString("{\"name\":\"张三\",\"old\":59}")'>JS调用OC-传参</button>
+            <h3>Oc调用Js,插入了一段话:</h3>
+            <p id="oc-text"></p>
+            <button onclick="popConfirm()">弹出询问框</button>
+    </div>
+    
 </body>
 <script>
-    // js调用oc函数 jsHandel
-    function jsToOc() {
-        window.webkit.messageHandlers.jsHandel.postMessage();
-    }
-    // js调用oc函数 jsHandelWithParam
-    function jsToOcWithJsonString() {
-        var json = {
-            "name":"木世界 .",
-            "address":"广东省广州市"
+        
+        /********** WKWebView **********/
+        // js调用oc函数 jsHandel
+        function jsToOc() {
+            window.webkit.messageHandlers.jsHandel.postMessage(JSON.stringify({}));
         }
-        window.webkit.messageHandlers.jsHandelWithParam.postMessage(JSON.stringify(json));
-    }
-    // oc调用Js函数，传参name
-    function ocToJs(name = '') {
-        console.log('oc向js传入了参数 name = ',name);
-        alert(name);
-    }
-</script>
+        // js调用oc函数 jsHandelWithParam
+        function jsToOcWithJsonString() {
+            var json = {
+                "name":"木世界 .",
+                "address":"广东省广州市"
+            }
+            window.webkit.messageHandlers.jsHandelWithParam.postMessage(JSON.stringify(json));
+        }
+        // oc调用Js函数，传参name
+        function ocToJs(name) {
+            alert("oc调用Js函数,参数="+name);
+        }
+        function jsObjectToOc() {
+            window.webkit.messageHandlers.util.postMessage(JSON.stringify({}));
+        }
+        
+        /********** UIWebView ***********/
+
+        function uiweb_ocTojsText(text) {
+            var obj = document.getElementById("oc-text");
+            obj.innerText = text;
+        }
+        function uiweb_jsToOcText() {
+            return "我是Js传到oc的文本";
+        }
+
+        function popConfirm() {
+            confirm("我是一个询问框");
+        }
+
+        </script>
+
 </html>

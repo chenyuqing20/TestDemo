@@ -34,6 +34,8 @@ typedef void(^AlertHandelBlock)(NSInteger index,id data);
 
 @property (nonatomic,copy) AlertHandelBlock alertHandelBlock;
 
+- (instancetype)initJDDConfirmWithTitle:(NSString *)title andMessage:(NSString *)message;
+
 - (instancetype)initJDDAlertWithTitle:(NSString *)title andMessage:(NSString *)message;
 
 - (void)show;

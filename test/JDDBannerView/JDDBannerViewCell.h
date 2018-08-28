@@ -10,4 +10,8 @@
 
 @interface JDDBannerViewCell : UICollectionViewCell
 
+@property (nonatomic,strong) UIImageView *imgView;
+
+@property (nonatomic,strong) UILabel *label;
+
 @end

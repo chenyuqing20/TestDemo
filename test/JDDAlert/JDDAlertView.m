@@ -7,7 +7,6 @@
 //
 
 #import "JDDAlertView.h"
-#import "AlertButtonModel.h"
 #import  "Masonry.h"
 
 #define JDD_HEX_COLOR(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
@@ -27,16 +26,24 @@
 @end
 @implementation JDDAlertView
 
-- (instancetype)initJDDAlertWithTitle:(NSString *)title andMessage:(NSString *)message{
+- (instancetype)initJDDConfirmWithTitle:(NSString *)title andMessage:(NSString *)message{
     
     if (self == [super init]) {
-        [self setupSubviews:title andMsg:message];
-        [self setLayout];
+        [self setupSubviews:title andMsg:message andBtnCount:2];
+        [self setLayout:2];
     }
     return self;
 }
 
-- (void)setupSubviews:(NSString *)title andMsg:(NSString *)message {
+- (instancetype)initJDDAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
+    if (self == [super init]) {
+        [self setupSubviews:title andMsg:message andBtnCount:1];
+        [self setLayout:1];
+    }
+    return self;
+}
+
+- (void)setupSubviews:(NSString *)title andMsg:(NSString *)message andBtnCount:(NSInteger)btnCount{
     
     _alertView = [UIView new];
     _alertView.layer.cornerRadius = 8;
@@ -67,7 +74,7 @@
     
     CGFloat buttonWidth = _alertView.frame.size.width / 2;
     CGFloat buttonHeight = BUTTON_HEIGHT;
-    for (int i=0; i<2; i++) {
+    for (int i=0; i<btnCount; i++) {
         UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(i*buttonWidth, 200, buttonWidth, buttonHeight)];
         NSString *text = i==0?@"取消":@"确定";
         button.tag = i;
@@ -81,7 +88,7 @@
     }
 }
 
-- (void)setLayout{
+- (void)setLayout:(NSInteger)btnCount{
     
     CGFloat padding = 30;
     
@@ -125,11 +132,10 @@
         make.height.mas_equalTo(1);
     }];
     
-    CGFloat buttonWidth = ([UIScreen mainScreen].bounds.size.width-padding*2)/2;
+    CGFloat buttonWidth = ([UIScreen mainScreen].bounds.size.width-padding*2)/btnCount;
     
     for (int i=0;i<self.buttons.count;i++) {
         UIButton *button = self.buttons[i];
-        NSLog(@"button left = %f",i*buttonWidth);
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(self.alertView.mas_left).offset(i*buttonWidth);
             make.width.mas_equalTo(buttonWidth);
@@ -144,7 +150,6 @@
  */
 - (void)show {
     [[UIApplication sharedApplication].windows.firstObject addSubview:self];
-//    NSLog(@"First Object = %@",[UIApplication sharedApplication].windows.firstObject);
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo([UIApplication sharedApplication].windows.firstObject);
     }];
@@ -212,7 +217,7 @@
 
 - (JDDAlertView *(^)(UIColor *)) rightBtnBgColor{
     return ^JDDAlertView *(UIColor *color){
-        if (self.buttons.count) {
+        if (self.buttons.count > 1) {
             [(UIButton *)self.buttons[1] setBackgroundColor:color];
         }
         return self;
@@ -231,7 +236,7 @@
 
 - (JDDAlertView *(^)(UIColor *)) rightBtnTextColor{
     return ^JDDAlertView *(UIColor *color){
-        if (self.buttons.count) {
+        if (self.buttons.count > 1) {
             [(UIButton *)self.buttons[1] setTitleColor:color forState:UIControlStateNormal];
         }
         return self;
@@ -249,7 +254,7 @@
 
 - (JDDAlertView *(^)(NSString *)) rightBtnText{
     return ^JDDAlertView *(NSString *rightText){
-        if (self.buttons.count) {
+        if (self.buttons.count > 1) {
             [(UIButton *)self.buttons[1] setTitle:rightText forState:UIControlStateNormal];
         }
         return self;
@@ -281,7 +286,7 @@
 
 - (JDDAlertView *(^)(float )) rightBtnFontSize{
     return ^JDDAlertView *(float size){
-        if (self.buttons.count) {
+        if (self.buttons.count > 1) {
             [[(UIButton *)self.buttons[1] titleLabel] setFont:[UIFont systemFontOfSize:size]];
         }
         return self;
@@ -321,4 +326,7 @@
         [self removeFromSuperview];
     }];
 }
+
+
+
 @end

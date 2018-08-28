@@ -7,16 +7,36 @@
 //
 
 #import "DBViewController.h"
+#import "Masonry.h"
 
 @interface DBViewController ()
-
+@property (nonatomic,strong) UITextField *nameTextField;
+@property (nonatomic,strong) UITextField *ageTextField;
 @end
 
 @implementation DBViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.title = @"WCDB";
+}
+
+- (void)setupSubviews {
+    _nameTextField = [[UITextField alloc] init];
+    [self.view addSubview:_nameTextField];
+    [_nameTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view);
+        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(40);
+    }];
+    
+    _ageTextField = [[UITextField alloc] init];
+    [self.view addSubview:_ageTextField];
+    [_ageTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.nameTextField);
+        make.top.equalTo(self.nameTextField.mas_bottom).offset(10);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

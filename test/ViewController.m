@@ -7,109 +7,93 @@
 //
 
 #import "ViewController.h"
-#import "JDDAlertView.h"
 #import "TableController.h"
-#import "JDDBannerView.h"
 #import "Masonry.h"
-#import "JDDPageControl.h"
+#import "DemoViewController.h"
+#import "WKWebViewController.h"
+#import "WebViewController.h"
+#import "TimerShaftController.h"
 
-@interface ViewController ()
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (assign,nonatomic) CGFloat contentOffset;
-@property (strong,nonatomic) NSArray *bannerList;
-
-@property (strong,nonatomic) JDDBannerView *bannerView;
-@property (strong,nonatomic) JDDPageControl *pageControl;
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (strong,nonatomic) UITableView *tableView;
+@property (strong,nonatomic) NSArray *dataList;
 @end
 
 @implementation ViewController
-
+- (void)injected {
+    NSLog(@"injected -- ");
+//    self.tableView.backgroundColor = [UIColor redColor];
+//    UITableViewCell *cell = [self.tableView visibleCells][0] ;
+//    cell.backgroundColor = [UIColor blueColor];
+//    [self.tableView reloadData];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-//    _bannerList = @[@"3(0)",@"1",@"2",@"3",@"1(4)"];
-    _bannerList = @[@"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1644077758,3194768429&fm=200&gp=0.jpg",@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528381529463&di=ccf6df079030e2c83e65e20a6c2ee985&imgtype=0&src=http%3A%2F%2Fpic1.cxtuku.com%2F00%2F10%2F24%2Fb544b2c80936.jpg",@"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1528382157258&di=aaa873c8043165ec024c0a9f5a059019&imgtype=0&src=http%3A%2F%2Fdown1.sucaitianxia.com%2Fpsd02%2Fpsd222%2Fpsds55427.jpg"];
+    _tableView = [[UITableView alloc] init];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [self.view addSubview:_tableView];
+    _dataList = @[@"Banner",@"Alert",@"TableCell删除",@"旋转",@"Y轴翻转",@"x轴翻转",@"放大",@"弹出",@"Masonry等间距排列",@"WKWevView",@"UIWebView",@"TimerShaft"];
     
-//    self.bannerView = [[JDDBannerView alloc] init];
-//    self.bannerView.imageList = self.bannerList;
-//    self.bannerView.isAutomaticScroll = YES;
-//    self.bannerView.automaticTime = 2.0;
-//    self.bannerView.selectDotColor = [UIColor lightGrayColor];
-//    self.bannerView.nomalDotColor = [UIColor groupTableViewBackgroundColor];
-//    self.bannerView.defaultImage = [UIImage imageNamed:@"discover_banner_default"];
-//    [self.view addSubview:_bannerView];
-    
-    
-    UIView *pageView = [[UIView alloc] init];
-    pageView.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:pageView];
-    
-    
-    [pageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(280);
-        make.height.equalTo(pageView.mas_width);
+    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(self.view);
-    }];
-    [_bannerView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(100);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.height.mas_equalTo(200);
+        make.size.mas_equalTo(self.view.bounds.size);
     }];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self yAnimation:pageView];
-    });
-}
-
-- (void)yAnimation:(UIView *)view {
-    CABasicAnimation* rotationAnimation;
-    //绕哪个轴，那么就改成什么：这里是绕y轴 ---> transform.rotation.y
-    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
-    //旋转角度
-    rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI];
-    //每次旋转的时间（单位秒）
-    rotationAnimation.duration = 0.4;
-    rotationAnimation.cumulative = YES;
-    //重复旋转的次数，如果你想要无数次，那么设置成MAXFLOAT
-    rotationAnimation.repeatCount = 0;
-    [view.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
-}
-
-- (IBAction)buttonClick:(id)sender {
-    [self showAlert];
+//    UITextField *tx = [UITextField new];
+//    tx.placeholder
+    
     
 }
 
-- (void)showAlert{
-    JDDAlertView *alert = [[JDDAlertView alloc] initJDDAlertWithTitle:nil andMessage:@"打开列表页吗?"]
-    .leftBtnText(@"暂不操作")
-    .rightBtnText(@"打开")
-    .titleFontSize(20)
-    .messageFontSize(18)
-    .leftBtnTextColor([UIColor greenColor])
-    .rightBtnTextColor([UIColor redColor])
-    .leftBtnFontSize(18)
-    .rightBtnFontSize(18);
-    [alert show];
-    alert.alertHandelBlock = ^(NSInteger index, id data) {
-        NSLog(@"index = %ld",(long)index);
-        if (index == 1) {
+#pragma mark - UITableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return  _dataList.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+    if (!cell) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    }
+    cell.textLabel.text = [NSString stringWithFormat:@"第%ld项 %@",(long)indexPath.row,_dataList[indexPath.row]];
+    cell.textLabel.font = [UIFont fontWithName:@"Plumb" size:20];
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.row) {
+        case kVC_CellDel:{
             TableController *tc = [[TableController alloc] init];
             [self.navigationController pushViewController:tc animated:YES];
         }
-    };
-
-}
-
-
-#pragma mark - UIScrollView
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat offset = scrollView.contentOffset.x;
-    if (offset >= self.contentOffset * 2) {
-        
+            break;
+        case kVC_WKWeb:{
+            WKWebViewController *wkvc = [[WKWebViewController alloc] init];
+            [self.navigationController pushViewController:wkvc animated:YES];
+        }
+            break;
+        case kVC_UIWeb:{
+            WebViewController *wvc = [[WebViewController alloc] init];
+            [self.navigationController pushViewController:wvc animated:YES];
+        }
+            break;
+        case kVC_TimerShaft: {
+            TimerShaftController *tvc = [[TimerShaftController alloc] init];
+            [self.navigationController pushViewController:tvc animated:YES];
+        }
+            break;
+        default:{
+            DemoViewController *v = [[DemoViewController alloc] init];
+            v.type = indexPath.row;
+            [self.navigationController pushViewController:v animated:YES];
+        }
+            break;
     }
+    
 }
 
 - (void)didReceiveMemoryWarning {
