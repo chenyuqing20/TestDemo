@@ -10,6 +10,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Masonry.h"
 
+#define DocumentDir [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
+#define BundlePath(res) [[NSBundle mainBundle] pathForResource:res ofType:nil]
+#define DocumentPath(res) [DocumentDir stringByAppendingPathComponent:res]
+
+extern int ffmpeg_main(int argc, char * argv[]);
+
 @interface TimerShaftController ()
 @property (nonatomic, strong) UIScrollView *scrollView;  //
 @property (nonatomic, strong) UIView *hLine;  //
@@ -71,26 +77,50 @@
     
 }
 
+/**
+ 获取每一秒的帧图
+
+ @param videoPath 视频路径
+ @return 图片数组
+ */
 - (NSArray *) getVideoPreViewImage:(NSString *)videoPath
 {
     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:videoPath] options:nil];
     AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
     gen.appliesPreferredTrackTransform = YES;
-//    gen.requestedTimeToleranceAfter = kCMTimeZero;
-//    gen.requestedTimeToleranceBefore = kCMTimeZero;
+    gen.requestedTimeToleranceAfter = kCMTimeZero;
+    gen.requestedTimeToleranceBefore = kCMTimeZero;
     int second = 0;
+    NSLog(@"duration.value%.2lld  duration.timescale=%.2d",asset.duration.value,asset.duration.timescale);
     second = floor(asset.duration.value / asset.duration.timescale); // 获取视频总时长,单位秒
     NSMutableArray *coverArray = [[NSMutableArray alloc] init];
     for (int i=0; i<second; i++) {
-        CMTime time = CMTimeMakeWithSeconds(0.0, i*100);
+        CMTime time = CMTimeMakeWithSeconds(i, i);
         NSError *error = nil;
         CMTime actualTime;
         CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
         UIImage *img = [[UIImage alloc] initWithCGImage:image];
-        [coverArray addObject:img];
+        if (img) {
+            [coverArray addObject:img];
+        }
         CGImageRelease(image);
     }
     return coverArray;
+}
+- (void)ffmpegGetVideoPreViewImage:(NSString *)videoPath {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        char *movie = (char *)[BundlePath(@"ta.mp4") UTF8String];
+        char *outPic = (char *)[DocumentPath(@"%05d.jpg") UTF8String];
+        char* a[] = {
+            "ffmpeg",
+            "-i",
+            movie,
+            "-r",
+            "10",
+            outPic
+        };
+//        ffmpeg_main(sizeof(a)/sizeof(*a), a);
+    });
 }
 
 - (void)didReceiveMemoryWarning {
