@@ -11,6 +11,7 @@
 		4C92049E83E81F108D2A55C9 /* libPods-testTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF164EE39915C0E4D04CC3CF /* libPods-testTests.a */; };
 		E70E29B6213D0F7400A8ABB1 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71615BF213D0384009569A9 /* CoreMedia.framework */; };
 		E70E77D520E38C25004BA863 /* UIWebView+JavaScriptAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = E70E77D420E38C25004BA863 /* UIWebView+JavaScriptAlert.m */; };
+		E70EE70E21491DCE005318D7 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = E70EE70D21491DCE005318D7 /* test.m */; };
 		E71021DE211073D70086B2BF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71021DD211073D70086B2BF /* AdSupport.framework */; };
 		E71021E0211073DD0086B2BF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71021DF211073DD0086B2BF /* CoreLocation.framework */; };
 		E71021E2211073E40086B2BF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E71021E1211073E40086B2BF /* QuartzCore.framework */; };
@@ -163,6 +164,8 @@
 		BF164EE39915C0E4D04CC3CF /* libPods-testTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E70E77D320E38C25004BA863 /* UIWebView+JavaScriptAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIWebView+JavaScriptAlert.h"; sourceTree = "<group>"; };
 		E70E77D420E38C25004BA863 /* UIWebView+JavaScriptAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+JavaScriptAlert.m"; sourceTree = "<group>"; };
+		E70EE70C21491DCE005318D7 /* test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
+		E70EE70D21491DCE005318D7 /* test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
 		E71021DD211073D70086B2BF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		E71021DF211073DD0086B2BF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E71021E1211073E40086B2BF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -971,6 +974,8 @@
 				E7A5BF1A20C13311007B053B /* Info.plist */,
 				E7A5BF1B20C13311007B053B /* main.m */,
 				E72B861220DCCA140034D150 /* PrefixHeader.pch */,
+				E70EE70C21491DCE005318D7 /* test.h */,
+				E70EE70D21491DCE005318D7 /* test.m */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -1274,6 +1279,7 @@
 				E78B60E820DB3FD5005C2F50 /* WKWebViewController.m in Sources */,
 				E75713DE20C530E80017DC8D /* MASCompositeConstraint.m in Sources */,
 				E7DEA217213400C8004BF436 /* TimerShaftController.m in Sources */,
+				E70EE70E21491DCE005318D7 /* test.m in Sources */,
 				E76FC07E20C951D7001ABD56 /* SDImageCache.m in Sources */,
 				E75713DF20C530E80017DC8D /* NSArray+MASAdditions.m in Sources */,
 				E76FC07B20C951D7001ABD56 /* SDWebImageCoder.m in Sources */,
