@@ -28,7 +28,7 @@ extern int ffmpeg_main(int argc, char * argv[]);
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    NSLog(@"Test New Function Feature");
     _videoPreview = [[UIView alloc] init];
     _videoPreview.backgroundColor = [UIColor greenColor];
     [self.view addSubview:_videoPreview];
